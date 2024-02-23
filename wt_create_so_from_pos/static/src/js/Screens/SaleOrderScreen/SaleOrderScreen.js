@@ -1,17 +1,20 @@
 /** @odoo-module */
-
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { parseFloat } from "@web/views/fields/parsers";
+import { floatIsZero } from "@web/core/utils/numbers";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { ControlButtonsMixin } from "@point_of_sale/app/utils/control_buttons_mixin";
 import { Orderline } from "@point_of_sale/app/store/models";
+
+import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { ConfirmPopup } from "@point_of_sale/app/utils/confirm_popup/confirm_popup";
 import { NumberPopup } from "@point_of_sale/app/utils/input_popups/number_popup";
 
-import { SaleOrderList } from "@pos_sale/js/OrderManagementScreen/SaleOrderList";
-import { SaleOrderManagementControlPanel } from "@pos_sale/js/OrderManagementScreen/SaleOrderManagementControlPanel";
+import { SaleOrderList } from "@pos_sale/app/order_management_screen/sale_order_list/sale_order_list";
+import { SaleOrderManagementControlPanel } from "@pos_sale/app/order_management_screen/sale_order_management_control_panel/sale_order_management_control_panel";
 import { Component, onMounted, useRef } from "@odoo/owl";
 import { usePos } from "@point_of_sale/app/store/pos_hook";
 import { SalesOrderPopup } from "@wt_create_so_from_pos/js/Popups/SalesOrderPopup";
@@ -118,17 +121,17 @@ export class SaleOrderScreen extends ControlButtonsMixin(Component) {
 	}
 	async _onClickSaleOrder(clickedOrder) {
 		const { confirmed, payload: selectedOption } = await this.popup.add(SalesOrderPopup, {
-			title: this.env._t('Sale Order')  + '  ' + clickedOrder.name,
+			title: _t('Sale Order')  + '  ' + clickedOrder.name,
 			list: [
 				{
 					id: "1",
-					label: this.env._t("Confirm Sales Order"),
+					label: _t("Confirm Sales Order"),
 					item: 'confirm',
 					icon: 'fa fa-check-circle',
 				},
 				{
 					id: "2",
-					label: this.env._t("Cancel Sales Order"),
+					label: _t("Cancel Sales Order"),
 					item: 'cancel',
 					icon: 'fa fa-close'
 				},
@@ -142,8 +145,8 @@ export class SaleOrderScreen extends ControlButtonsMixin(Component) {
 						// this.pos.closeScreen();
 					}else {
                         await this.popup.add(ConfirmPopup, {
-                            title: this.env._t('Already Confirmed'),
-                            body: this.env._t(
+                            title: _t('Already Confirmed'),
+                            body: _t(
                                 'This Sales Order is Already in confirmed state!!!!'
                             ),
                         });
@@ -155,8 +158,8 @@ export class SaleOrderScreen extends ControlButtonsMixin(Component) {
 						// this.pos.closeScreen();
 					}else {
                         await this.popup.add(ConfirmPopup, {
-                            title: this.env._t('Already Cancelled'),
-                            body: this.env._t(
+                            title: _t('Already Cancelled'),
+                            body: _t(
                                 'This Sales Order is Already in Cancel State!!!!'
                             ),
                         });

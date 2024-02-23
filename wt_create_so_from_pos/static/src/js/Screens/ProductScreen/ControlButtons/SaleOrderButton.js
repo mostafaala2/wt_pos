@@ -1,4 +1,5 @@
 /** @odoo-module */
+import { _t } from "@web/core/l10n/translation";
 
 import { ProductScreen } from "@point_of_sale/app/screens/product_screen/product_screen";
 import { useService } from "@web/core/utils/hooks";
@@ -36,8 +37,8 @@ export class SaleOrderButton extends Component {
 				if(result){
 					this.pos.showScreen('ProductScreen');
 					await this.popup.add(ConfirmPopup, {
-						title: this.env._t('Successfully!'),
-						body: this.env._t(
+						title: _t('Successfully!'),
+						body: _t(
 							'Sales Order ' + result.name +' Created Successfully!!!!'
 						),
 					});
@@ -46,15 +47,15 @@ export class SaleOrderButton extends Component {
 			}
 			else if(this.pos.get_order().get_orderlines().length <= 0){
 				await this.popup.add(ErrorPopup, {
-					title: this.env._t('No Product'),
-					body: this.env._t("There are no Product for SaleOrder."),
+					title: _t('No Product'),
+					body: _t("There are no Product for SaleOrder."),
 				});
 			}
 		}
 		else{
 			await this.popup.add(ErrorPopup, {
-				title: this.env._t('Unknown Customer'),
-				body: this.env._t("Select Customer."),
+				title: _t('Unknown Customer'),
+				body: _t("Select Customer."),
 			});
 		}
 	}
